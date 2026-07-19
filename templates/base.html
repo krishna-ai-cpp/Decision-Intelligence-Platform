@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Decision Intelligence Platform{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+{% set breadcrumbs = {
+  'dashboard': ['Dashboard'], 'new_project': ['Project', 'New Project'],
+  'saved_projects': ['Project', 'Saved Projects'], 'upload': ['Pipeline', 'Upload Data'],
+  'profile': ['Pipeline', 'Profiling'], 'goal': ['Pipeline', 'Goal & Workflow'],
+  'clean': ['Pipeline', 'Cleaning'], 'features': ['Pipeline', 'Feature Engineering'],
+  'eda': ['Pipeline', 'Exploratory Analysis'], 'train': ['Modeling', 'Train Models'],
+  'compare': ['Modeling', 'Model Comparison'], 'decisions': ['Modeling', 'Decision Intelligence'],
+  'recommend': ['Modeling', 'Recommendations'], 'whatif': ['Interact', 'What-If / Prediction'],
+  'explain': ['Interact', 'Explainability'], 'alerts': ['Interact', 'Smart Alerts'],
+  'report': ['Interact', 'Final Report'], 'settings': ['Account', 'Settings'],
+  'help_page': ['Account', 'Help']
+} %}
+{% set crumb = breadcrumbs.get(request.endpoint, ['Decision Intelligence Platform']) %}
+
+<div id="loading-overlay"><div class="spinner"></div><div class="loading-text">Working&hellip;</div></div>
+
+<div class="toast-stack" id="toast-stack">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+      <div class="toast {{ category }}">
+        <span class="toast-msg">{{ message }}</span>
+        <button class="toast-close" onclick="this.parentElement.remove()">&times;</button>
+      </div>
+    {% endfor %}
+  {% endwith %}
+</div>
+
+<div class="layout">
+
+  {% if session.get('user_id') %}
+  <div class="sidebar-backdrop" id="sidebar-backdrop" onclick="toggleSidebar(false)"></div>
+  <nav class="sidebar" id="sidebar">
+    <div class="brand">DI<span>P</span> &mdash; Decision Intelligence</div>
+
+    <div class="nav-group-title">Project</div>
+    <a href="{{ url_for('dashboard') }}" class="{{ 'active' if request.endpoint=='dashboard' }}">Dashboard</a>
+    <a href="{{ url_for('new_project') }}" class="{{ 'active' if request.endpoint=='new_project' }}">New Project</a>
+    <a href="{{ url_for('saved_projects') }}" class="{{ 'active' if request.endpoint=='saved_projects' }}">Saved Projects</a>
+
+    <div class="nav-group-title">Data Pipeline</div>
+    <a href="{{ url_for('upload') }}" class="{{ 'active' if request.endpoint=='upload' }}">1. Upload Data</a>
+    <a href="{{ url_for('profile') }}" class="{{ 'active' if request.endpoint=='profile' }}">2. Profiling</a>
+    <a href="{{ url_for('goal') }}" class="{{ 'active' if request.endpoint=='goal' }}">3. Goal &amp; Workflow</a>
+    <a href="{{ url_for('clean') }}" class="{{ 'active' if request.endpoint=='clean' }}">4. Cleaning</a>
+    <a href="{{ url_for('features') }}" class="{{ 'active' if request.endpoint=='features' }}">5. Feature Engineering</a>
+    <a href="{{ url_for('eda') }}" class="{{ 'active' if request.endpoint=='eda' }}">6. Exploratory Analysis</a>
+
+    <div class="nav-group-title">Modeling</div>
+    <a href="{{ url_for('train') }}" class="{{ 'active' if request.endpoint=='train' }}">7. Train Models</a>
+    <a href="{{ url_for('compare') }}" class="{{ 'active' if request.endpoint=='compare' }}">8. Model Comparison</a>
+    <a href="{{ url_for('decisions') }}" class="{{ 'active' if request.endpoint=='decisions' }}">9. Decision Intelligence</a>
+    <a href="{{ url_for('recommend') }}" class="{{ 'active' if request.endpoint=='recommend' }}">10. Recommendations</a>
+
+    <div class="nav-group-title">Interact</div>
+    <a href="{{ url_for('whatif') }}" class="{{ 'active' if request.endpoint=='whatif' }}">11. What-If / Prediction</a>
+    <a href="{{ url_for('explain') }}" class="{{ 'active' if request.endpoint=='explain' }}">12. Explainability</a>
+    <a href="{{ url_for('alerts') }}" class="{{ 'active' if request.endpoint=='alerts' }}">13. Smart Alerts</a>
+    <a href="{{ url_for('report') }}" class="{{ 'active' if request.endpoint=='report' }}">14. Final Report</a>
+
+    <div class="nav-group-title">Account</div>
+    <a href="{{ url_for('settings') }}" class="{{ 'active' if request.endpoint=='settings' }}">Settings</a>
+    <a href="{{ url_for('help_page') }}" class="{{ 'active' if request.endpoint=='help_page' }}">Help</a>
+  </nav>
+  {% endif %}
+
+  <div class="content-col">
+    {% if session.get('user_id') %}
+    <header class="topbar">
+      <button class="hamburger" id="hamburger" onclick="toggleSidebar()" aria-label="Toggle navigation">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav class="breadcrumbs" aria-label="Breadcrumb">
+        {% for c in crumb %}
+          <span class="crumb{{ ' current' if loop.last else '' }}">{{ c }}</span>
+          {% if not loop.last %}<span class="crumb-sep">/</span>{% endif %}
+        {% endfor %}
+      </nav>
+
+      <div class="topbar-right">
+        {% if session.get('session_id') %}
+          <span class="session-pill">Session #{{ session.get('session_id') }}</span>
+        {% endif %}
+        <div class="profile-menu">
+          <button class="profile-btn" onclick="toggleProfileMenu()">
+            <span class="avatar">{{ session.get('user_name', '?')[0]|upper }}</span>
+            <span class="profile-name">{{ session.get('user_name') }}</span>
+            <span class="chev">&#9662;</span>
+          </button>
+          <div class="profile-dropdown" id="profile-dropdown">
+            <a href="{{ url_for('settings') }}">Settings</a>
+            <a href="{{ url_for('help_page') }}">Help</a>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="danger" onclick="return confirmLogout()">Log Out</a>
+          </div>
+        </div>
+      </div>
+    </header>
+    {% endif %}
+
+    <main class="main">
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+
+</div>
+
+<form id="logout-form" action="{{ url_for('logout') }}" method="get" style="display:none;"></form>
+
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

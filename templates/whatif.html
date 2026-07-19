@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}What-If Simulation - DIP{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1>Step 11: What-If Simulation / Prediction</h1>
+  <p>Collects one value per feature (the web equivalent of phase13.ask_user_input()'s input() loop), then calls the unchanged phase13.sing_pred().</p>
+</div>
+
+<div class="card" style="max-width:560px;">
+  <form method="POST">
+    {% for f in feature_names %}
+      <label>{{ f }}</label>
+      <input type="number" step="any" name="{{ f }}" value="{{ inputs[f] if inputs else '' }}" required>
+    {% endfor %}
+    <button class="btn" type="submit">Predict</button>
+  </form>
+</div>
+
+{% if done %}
+<div class="card">
+  <h2>Prediction Result</h2>
+  <p class="score-ring">{{ prediction }}</p>
+  <a class="btn" href="{{ url_for('explain') }}">Continue to Explainability &rarr;</a>
+</div>
+{% endif %}
+
+{% if console %}
+<div class="card"><h2>Console Output</h2><pre class="console">{{ console }}</pre></div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Decision Intelligence - DIP{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1>Step 9: Decision Intelligence</h1>
+  <p>
+    {% if workflow == "clustering" %}Builds the cluster summary table (average values per cluster).
+    {% else %}Calls phase11.get_feature_imp(), identify_drivers(), gen_decision_exp(), gen_decision().{% endif %}
+  </p>
+</div>
+
+<div class="card">
+  <form method="POST">
+    <button class="btn" type="submit">
+      {% if workflow == "clustering" %}Build Cluster Summary{% else %}Explain the Decision{% endif %}
+    </button>
+  </form>
+</div>
+
+{% if done %}
+  {% if workflow == "clustering" %}
+  <div class="card">
+    <h2>Cluster Summary</h2>
+    <div style="overflow-x:auto;">{{ cluster_summary|safe }}</div>
+  </div>
+  {% else %}
+  <div class="card">
+    <h2>Key Business Drivers</h2>
+    {% if drivers %}
+      <ul class="insight-list">{% for name, pct in drivers %}<li>{{ name }} &mdash; {{ pct }}%</li>{% endfor %}</ul>
+    {% else %}<p class="empty-state">Not enough information to identify drivers.</p>{% endif %}
+  </div>
+  <div class="card">
+    <h2>Explanation</h2>
+    <ul class="insight-list">{% for l in lines %}<li>{{ l }}</li>{% endfor %}</ul>
+  </div>
+  {% if imp_chart %}
+  <div class="card">
+    <h2>Feature Importance Chart (phase16)</h2>
+    <img src="{{ url_for('chart_file', filename=imp_chart) }}" alt="feature importance" style="max-width:480px;border-radius:8px;border:1px solid var(--border);">
+  </div>
+  {% endif %}
+  {% endif %}
+  <a class="btn" href="{{ url_for('recommend') }}">Continue to Recommendations &rarr;</a>
+{% endif %}
+
+{% if console %}
+<div class="card"><h2>Console Output</h2><pre class="console">{{ console }}</pre></div>
+{% endif %}
+{% endblock %}

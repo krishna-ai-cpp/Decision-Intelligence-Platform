@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Data Profiling - DIP{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1>Step 2: Dataset Profiling</h1>
+  <p>Calls phase3.profile(), detect(), constant(), correlated(), skewed(), data_quality().</p>
+</div>
+
+<div class="grid-2">
+  <div class="card" style="text-align:center;">
+    <h2>Data Quality Score</h2>
+    <div class="score-ring">{{ dq }}%</div>
+    <p style="color:var(--text-muted);font-size:0.85rem;">Missing: {{ mc }} cells · Duplicates: {{ dup }} rows</p>
+  </div>
+  <div class="card">
+    <h2>Column Types</h2>
+    <p><strong>Numeric:</strong> {{ nc|join(", ") if nc else "none" }}</p>
+    <p><strong>Categorical:</strong> {{ cc|join(", ") if cc else "none" }}</p>
+    <p><strong>Datetime:</strong> {{ dc|join(", ") if dc else "none" }}</p>
+    <p><strong>Boolean/Other:</strong> {{ bc|join(", ") if bc else "none" }}</p>
+  </div>
+</div>
+
+<div class="grid-2">
+  <div class="card">
+    <h2>Constant Columns</h2>
+    {% if con %}<p>{{ con|join(", ") }}</p>{% else %}<p class="empty-state">None found.</p>{% endif %}
+  </div>
+  <div class="card">
+    <h2>Highly Correlated Pairs</h2>
+    {% if co %}
+      <ul class="insight-list">{% for pair in co %}<li>{{ pair[0] }} &harr; {{ pair[1] }} ({{ pair[2] }})</li>{% endfor %}</ul>
+    {% else %}<p class="empty-state">None found.</p>{% endif %}
+  </div>
+</div>
+
+<div class="card">
+  <h2>Skewed Columns</h2>
+  {% if sk %}<p>{% for s in sk %}{{ s[0] }} (skew {{ s[1] }})&nbsp;&nbsp; {% endfor %}</p>{% else %}<p class="empty-state">None found.</p>{% endif %}
+  <a class="btn" href="{{ url_for('goal') }}">Continue to Goal Selection &rarr;</a>
+</div>
+
+{% if console %}
+<div class="card"><h2>Console Output</h2><pre class="console">{{ console }}</pre></div>
+{% endif %}
+{% endblock %}

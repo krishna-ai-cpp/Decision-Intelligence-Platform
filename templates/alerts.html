@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Smart Alerts - DIP{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1>Step 13: Smart Alerts</h1>
+  <p>Calls phase15.run_all() (regression/classification) or the individual checks (clustering).</p>
+</div>
+
+<div class="card">
+  <form method="POST">
+    <button class="btn" type="submit">Run Alerts</button>
+  </form>
+</div>
+
+{% if done %}
+<div class="card">
+  <h2>Warnings</h2>
+  {% if warnings %}
+    <ul class="insight-list">{% for w in warnings %}<li style="white-space:pre-line;">{{ w }}</li>{% endfor %}</ul>
+  {% else %}<p class="empty-state">No major issues detected.</p>{% endif %}
+  <a class="btn" href="{{ url_for('report') }}">Continue to Final Report &rarr;</a>
+</div>
+{% endif %}
+
+{% if console %}
+<div class="card"><h2>Console Output</h2><pre class="console">{{ console }}</pre></div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Something Went Wrong - DIP{% endblock %}
+{% block content %}
+<div class="error-page">
+  <div class="error-code">500</div>
+  <h1>Something went wrong on our end</h1>
+  <p>
+    The server hit an unexpected error while processing that step. Your project
+    progress up to the last completed step is still saved. Try again, and if it
+    keeps happening, check the step that came right before this one.
+  </p>
+  <a class="btn" href="{{ url_for('dashboard') if session.get('user_id') else url_for('login') }}">
+    {{ 'Back to Dashboard' if session.get('user_id') else 'Back to Login' }}
+  </a>
+</div>
+{% endblock %}

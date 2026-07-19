@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Log In - DIP{% endblock %}
+{% block content %}
+<div style="max-width:420px;margin:60px auto;">
+  <div class="page-header" style="text-align:center;">
+    <h1>DI<span style="color:var(--accent)">P</span></h1>
+    <p>Decision Intelligence Platform</p>
+  </div>
+  <div class="card">
+    <h2>Log In</h2>
+    <form method="POST">
+      <label>Username</label>
+      <input type="text" name="username" required autofocus>
+      <label>Password</label>
+      <input type="password" name="password" required>
+      <button class="btn" type="submit" style="width:100%">Log In</button>
+    </form>
+    <p style="text-align:center;margin-top:16px;font-size:0.88rem;color:var(--text-muted)">
+      Don't have an account? <a href="{{ url_for('register') }}">Register</a>
+    </p>
+  </div>
+  {% if console %}
+  <div class="card"><h2>Console Output</h2><pre class="console">{{ console }}</pre></div>
+  {% endif %}
+</div>
+{% endblock %}

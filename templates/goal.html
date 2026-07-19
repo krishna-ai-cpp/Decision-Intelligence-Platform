@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Goal & Workflow - DIP{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1>Step 3: Business Goal &amp; Workflow</h1>
+  <p>These are the exact 5 options from phase4_5.select_business_goal(); your choice is passed straight into the unchanged phase4_5.select_workflow().</p>
+</div>
+
+<div class="card" style="max-width:640px;">
+  <form method="POST">
+    {% for key, option in options.items() %}
+    <label class="radio-option">
+      <input type="radio" name="goal_choice" value="{{ key }}" required>
+      {{ option }}
+    </label>
+    {% endfor %}
+    <button class="btn" type="submit">Confirm Goal</button>
+  </form>
+</div>
+
+{% if workflow %}
+<div class="card">
+  <h2>Workflow Selected</h2>
+  <p><span class="badge">{{ workflow }}</span></p>
+  <p>Goal: {{ chosen }}</p>
+  <a class="btn" href="{{ url_for('clean') }}">Continue to Cleaning &rarr;</a>
+</div>
+{% endif %}
+
+{% if console %}
+<div class="card"><h2>Console Output</h2><pre class="console">{{ console }}</pre></div>
+{% endif %}
+{% endblock %}

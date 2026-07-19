@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Dashboard - DIP{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1>Welcome back, {{ session.get('user_name') }}</h1>
+  <p>Resume an unfinished project or start a new one.</p>
+</div>
+
+<div class="grid-2">
+  <div class="card">
+    <h2>Start Something New</h2>
+    <p style="color:var(--text-muted);font-size:0.9rem;">
+      Upload a fresh dataset and walk through the full journey: profiling,
+      cleaning, feature engineering, modeling, and a final report.
+    </p>
+    <a class="btn" href="{{ url_for('new_project') }}">+ New Project</a>
+  </div>
+
+  <div class="card">
+    <h2>Your Unfinished Projects</h2>
+    {% if sessions %}
+      {% for s in sessions %}
+        <div class="radio-option" style="cursor:default;">
+          <div style="flex:1">
+            <strong>Session #{{ s[0] }}</strong> &mdash; {{ s[1] }}<br>
+            <span style="font-size:0.8rem;color:var(--text-muted)">Last step: {{ s[2] }} · {{ s[3] }}</span>
+          </div>
+          <a class="btn btn-secondary" href="{{ url_for('resume', sid=s[0]) }}">Resume</a>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p class="empty-state">No unfinished projects yet.</p>
+    {% endif %}
+  </div>
+</div>
+
+{% if console %}
+<div class="card"><h2>Console Output</h2><pre class="console">{{ console }}</pre></div>
+{% endif %}
+{% endblock %}

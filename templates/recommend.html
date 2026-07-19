@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Recommendations - DIP{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1>Step 10: Recommendations</h1>
+  <p>Calls phase12.rec_for_class() / rec_for_reg() / rec_for_clus() + rec_for_dqs() + gen_rec().</p>
+</div>
+
+<div class="card">
+  <form method="POST">
+    <button class="btn" type="submit">Generate Recommendations</button>
+  </form>
+</div>
+
+{% if done %}
+<div class="card">
+  <h2>Recommendations</h2>
+  {% if rec %}
+    <ul class="rec-list">{% for r in rec %}<li style="white-space:pre-line;">{{ r }}</li>{% endfor %}</ul>
+  {% else %}<p class="empty-state">No specific recommendations were generated for this dataset.</p>{% endif %}
+  <a class="btn" href="{{ url_for('whatif') }}">Continue to What-If Simulation &rarr;</a>
+</div>
+{% endif %}
+
+{% if console %}
+<div class="card"><h2>Console Output</h2><pre class="console">{{ console }}</pre></div>
+{% endif %}
+{% endblock %}

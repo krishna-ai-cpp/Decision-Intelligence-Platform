@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Help - DIP{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1>Help</h1>
+  <p>How the platform's journey works, step by step.</p>
+</div>
+<div class="card">
+  <h2>The Full Journey</h2>
+  <p>Login/Register &rarr; New or Resume Session &rarr; Upload Data &rarr; Profile Data &rarr;
+  Choose Goal &rarr; Choose Workflow &rarr; Clean Data &rarr; Feature Engineering &rarr;
+  Explore Data (EDA) &rarr; Train Models &rarr; Compare Models &rarr; Explain Decisions &rarr;
+  Get Recommendations &rarr; What-If Simulation &rarr; Explainability &rarr; Alerts &rarr;
+  Final Report &rarr; Done (Resume Anytime Later).</p>
+</div>
+<div class="card">
+  <h2>Tips</h2>
+  <ul class="insight-list">
+    <li>Use the sidebar to jump between steps once a project is open.</li>
+    <li>Every page shows a "Console Output" panel with exactly what your backend functions printed.</li>
+    <li>Unfinished projects can be resumed from the Dashboard or Saved Projects page at any time.</li>
+    <li>Charts and reports are saved to disk in the charts/ and reports/ folders, and are downloadable from the app.</li>
+  </ul>
+</div>
+{% endblock %}

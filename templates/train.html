@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}Train Models - DIP{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1>Step 7: Train Models</h1>
+  <p>
+    {% if workflow == "regression" %}Calls phase9.train_reg() &mdash; Linear Regression, Decision Tree, Random Forest.
+    {% elif workflow == "classification" %}Calls phase9.train_class() &mdash; Logistic Regression, KNN, Decision Tree, Random Forest.
+    {% elif workflow == "clustering" %}Calls phase9.clustering() &mdash; finds the best K and trains KMeans.
+    {% else %}This workflow (exploration only) does not train a model.{% endif %}
+  </p>
+</div>
+
+<div class="card">
+  <form method="POST">
+    <button class="btn" type="submit">Train Models</button>
+  </form>
+</div>
+
+{% if done %}
+  {% if results %}
+  <div class="card">
+    <h2>Results</h2>
+    <table class="data-table">
+      <tr>
+        <th>Model</th>
+        {% if workflow == "regression" %}<th>R2</th><th>MAE</th><th>RMSE</th>
+        {% else %}<th>Accuracy</th><th>Precision</th><th>Recall</th><th>F1</th>{% endif %}
+        <th>Training Time (s)</th>
+      </tr>
+      {% for r in results %}
+      <tr>
+        <td>{{ r.model_name }}</td>
+        {% if workflow == "regression" %}
+          <td>{{ "%.4f"|format(r.r2) }}</td><td>{{ "%.4f"|format(r.mae) }}</td><td>{{ "%.4f"|format(r.rmse) }}</td>
+        {% else %}
+          <td>{{ "%.4f"|format(r.accuracy) }}</td><td>{{ "%.4f"|format(r.precision) }}</td>
+          <td>{{ "%.4f"|format(r.recall) }}</td><td>{{ "%.4f"|format(r.f1) }}</td>
+        {% endif %}
+        <td>{{ "%.4f"|format(r.training_time) }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+    <a class="btn" href="{{ url_for('compare') }}">Continue to Model Comparison &rarr;</a>
+  </div>
+  {% elif cluster_result %}
+  <div class="card">
+    <h2>Clustering Result</h2>
+    <p>Best K: <strong>{{ cluster_result.best_k }}</strong></p>
+    <p>Silhouette Score: <strong>{{ cluster_result.silhouette_score }}</strong></p>
+    <div class="chart-grid">
+      {% if elbow_chart %}
+      <div><img src="{{ url_for('chart_file', filename=elbow_chart) }}" alt="elbow curve"><div class="chart-name">Elbow Curve (phase16)</div></div>
+      {% endif %}
+      {% if cluster_viz_chart %}
+      <div><img src="{{ url_for('chart_file', filename=cluster_viz_chart) }}" alt="cluster visualization"><div class="chart-name">Cluster Visualization (phase16)</div></div>
+      {% endif %}
+    </div>
+    <a class="btn" href="{{ url_for('decisions') }}">Continue to Decision Intelligence &rarr;</a>
+  </div>
+  {% endif %}
+{% endif %}
+
+{% if console %}
+<div class="card"><h2>Console Output</h2><pre class="console">{{ console }}</pre></div>
+{% endif %}
+{% endblock %}

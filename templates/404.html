@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Page Not Found - DIP{% endblock %}
+{% block content %}
+<div class="error-page">
+  <div class="error-code">404</div>
+  <h1>Page not found</h1>
+  <p>The page you're looking for doesn't exist, or the link may be out of date.</p>
+  <a class="btn" href="{{ url_for('dashboard') if session.get('user_id') else url_for('login') }}">
+    {{ 'Back to Dashboard' if session.get('user_id') else 'Back to Login' }}
+  </a>
+</div>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Exploratory Analysis - DIP{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1>Step 6: Exploratory Data Analysis</h1>
+  <p>Calls phase8.explore_dataset() &mdash; draws every chart and writes plain-English insights.</p>
+</div>
+
+<div class="card">
+  <form method="POST">
+    <button class="btn" type="submit">Run EDA</button>
+  </form>
+</div>
+
+{% if done %}
+<div class="card">
+  <h2>Insights</h2>
+  {% if insights %}
+    <ul class="insight-list">{% for i in insights %}<li>{{ i }}</li>{% endfor %}</ul>
+  {% else %}<p class="empty-state">No insights generated.</p>{% endif %}
+</div>
+
+<div class="card">
+  <h2>Charts</h2>
+  <div class="chart-grid">
+    {% for c in charts %}
+    <div>
+      <img src="{{ url_for('chart_file', filename=c) }}" alt="{{ c }}">
+      <div class="chart-name">{{ c }}</div>
+    </div>
+    {% endfor %}
+  </div>
+  <a class="btn" href="{{ url_for('train') }}">Continue to Model Training &rarr;</a>
+</div>
+{% endif %}
+
+{% if console %}
+<div class="card"><h2>Console Output</h2><pre class="console">{{ console }}</pre></div>
+{% endif %}
+{% endblock %}

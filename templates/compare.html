@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Model Comparison - DIP{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1>Step 8: Model Comparison</h1>
+  <p>Calls phase10.rank_regression_winner() / rank_winner_class() / comp_reg_class().</p>
+</div>
+
+<div class="card">
+  <form method="POST">
+    <button class="btn" type="submit">Compare Models</button>
+  </form>
+</div>
+
+{% if done %}
+<div class="card">
+  <h2>Winner Explanation</h2>
+  <p style="white-space:pre-line;">{{ explanation }}</p>
+  <p><span class="badge success">Best Model: {{ best.model_name }}</span></p>
+  {% if result_chart %}
+  <h2>Result Chart (phase16)</h2>
+  <img src="{{ url_for('chart_file', filename=result_chart) }}" alt="result chart" style="max-width:480px;border-radius:8px;border:1px solid var(--border);">
+  {% endif %}
+  <div><a class="btn" href="{{ url_for('decisions') }}">Continue to Decision Intelligence &rarr;</a></div>
+</div>
+{% endif %}
+
+{% if console %}
+<div class="card"><h2>Console Output</h2><pre class="console">{{ console }}</pre></div>
+{% endif %}
+{% endblock %}

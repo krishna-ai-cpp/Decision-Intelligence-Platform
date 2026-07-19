@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}New Project - DIP{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1>Start a New Project</h1>
+  <p>This calls phase2.create_new_session() to open a fresh, trackable session.</p>
+</div>
+<div class="card" style="max-width:520px;">
+  <form method="POST">
+    <label>Project / Dataset Name</label>
+    <input type="text" name="dataset_name" placeholder="e.g. Customer Churn Analysis" required autofocus>
+    <button class="btn" type="submit">Create Session &amp; Continue to Upload</button>
+  </form>
+</div>
+{% endblock %}

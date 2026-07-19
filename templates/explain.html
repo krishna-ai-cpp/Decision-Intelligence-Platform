@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Explainability - DIP{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1>Step 12: Explainability</h1>
+  <p>Calls phase14.model_reliability() and phase14.exp_pred() &mdash; confidence, reliability, and top feature contributors.</p>
+</div>
+
+<div class="card">
+  <form method="POST">
+    <button class="btn" type="submit">Explain Prediction</button>
+  </form>
+</div>
+
+{% if done %}
+<div class="card">
+  <h2>Result</h2>
+  <p>Prediction: <strong>{{ prediction }}</strong></p>
+  <p>Model Reliability: <span class="badge">{{ reliability }}</span> (evaluation score {{ "%.2f"|format(evaluation) }})</p>
+  <a class="btn" href="{{ url_for('alerts') }}">Continue to Smart Alerts &rarr;</a>
+</div>
+{% endif %}
+
+{% if console %}
+<div class="card"><h2>Console Output</h2><pre class="console">{{ console }}</pre></div>
+{% endif %}
+{% endblock %}

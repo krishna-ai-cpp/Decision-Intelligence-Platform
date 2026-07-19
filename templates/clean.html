@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Data Cleaning - DIP{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1>Step 4: Clean Data</h1>
+  <p>Calls phase6.clean_dataset() &mdash; removes duplicates, empty columns, fixes types, fills missing values, standardizes text.</p>
+</div>
+
+<div class="card">
+  <form method="POST">
+    <button class="btn" type="submit">Run Cleaning</button>
+  </form>
+</div>
+
+{% if cleaned %}
+<div class="card">
+  <h2>Cleaning Complete</h2>
+  <p><span class="badge success">Done</span> New shape: {{ shape[0] }} rows &times; {{ shape[1] }} columns</p>
+  <a class="btn" href="{{ url_for('features') }}">Continue to Feature Engineering &rarr;</a>
+</div>
+{% endif %}
+
+{% if console %}
+<div class="card"><h2>Console Output</h2><pre class="console">{{ console }}</pre></div>
+{% endif %}
+{% endblock %}

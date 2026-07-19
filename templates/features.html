@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Feature Engineering - DIP{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1>Step 5: Feature Engineering</h1>
+  <p>
+    {% if workflow in ["regression", "classification"] %}
+      Calls phase7.prepare() &mdash; splits target, label-encodes text, scales numbers, saves the pipeline as a .joblib file.
+    {% else %}
+      Calls phase7.encoding() and phase7.scaling() directly (clustering has no target column to split off).
+    {% endif %}
+  </p>
+</div>
+
+<div class="card" style="max-width:520px;">
+  <form method="POST">
+    {% if workflow in ["regression", "classification"] %}
+      <label>Target column to predict</label>
+      <select name="target_column" required>
+        {% for c in columns %}<option value="{{ c }}">{{ c }}</option>{% endfor %}
+      </select>
+    {% else %}
+      <p style="color:var(--text-muted);font-size:0.88rem;">No target needed for clustering &mdash; every column becomes a feature.</p>
+    {% endif %}
+    <button class="btn" type="submit">Run Feature Engineering</button>
+  </form>
+</div>
+
+{% if done %}
+<div class="card">
+  <h2>Feature Engineering Complete</h2>
+  <p><span class="badge success">Done</span> Final feature table: {{ feature_shape[0] }} rows &times; {{ feature_shape[1] }} columns</p>
+  <a class="btn" href="{{ url_for('eda') }}">Continue to Exploratory Analysis &rarr;</a>
+</div>
+{% endif %}
+
+{% if console %}
+<div class="card"><h2>Console Output</h2><pre class="console">{{ console }}</pre></div>
+{% endif %}
+{% endblock %}

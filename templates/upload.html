@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Upload Data - DIP{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1>Step 1: Upload Data</h1>
+  <p>Calls phase3.upload_read_csv() &mdash; validates and reads your CSV, saves metadata to MySQL.</p>
+</div>
+
+<div class="card" style="max-width:560px;">
+  <form method="POST" enctype="multipart/form-data">
+    <label>Upload a CSV file</label>
+    <input type="file" name="csv_file" accept=".csv">
+    <label>...or type a path already on the server</label>
+    <input type="text" name="csv_path" placeholder="/path/to/dataset.csv">
+    <button class="btn" type="submit">Upload &amp; Read Dataset</button>
+  </form>
+</div>
+
+{% if uploaded %}
+<div class="card">
+  <h2>Dataset Summary</h2>
+  <p><span class="badge success">Uploaded</span> Shape: {{ shape[0] }} rows &times; {{ shape[1] }} columns</p>
+  <p><strong>Columns:</strong> {{ columns|join(", ") }}</p>
+  <div style="overflow-x:auto;">{{ head|safe }}</div>
+  <a class="btn" href="{{ url_for('profile') }}">Continue to Profiling &rarr;</a>
+</div>
+{% endif %}
+
+{% if console %}
+<div class="card"><h2>Console Output</h2><pre class="console">{{ console }}</pre></div>
+{% endif %}
+{% endblock %}
